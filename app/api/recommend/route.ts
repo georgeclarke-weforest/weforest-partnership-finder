@@ -113,8 +113,8 @@ export async function POST(req: NextRequest) {
     messages: [{ role: "user", content: prompt }],
   });
 
-  const textBlock = message.content.find((b) => b.type === "text");
-  if (!textBlock || textBlock.type !== "text") {
+  const textBlock = (message.content as Array<{ type: string; text?: string }>).find((b) => b.type === "text");
+  if (!textBlock || !textBlock.text) {
     return NextResponse.json({ error: "No response from AI" }, { status: 502 });
   }
 
