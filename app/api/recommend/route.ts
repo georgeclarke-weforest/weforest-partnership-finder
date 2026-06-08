@@ -105,7 +105,8 @@ export async function POST(req: NextRequest) {
 
   const prompt = buildPrompt(url, objective, websiteText);
 
-  const message = await client.messages.create({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const message = await (client.messages.create as any)({
     model: "claude-opus-4-8",
     max_tokens: 1024,
     thinking: { type: "adaptive" },
