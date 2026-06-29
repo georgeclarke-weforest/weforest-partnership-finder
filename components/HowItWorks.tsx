@@ -1,6 +1,7 @@
 "use client";
 import { Eyebrow } from "./Eyebrow";
 import { PillButton } from "./PillButton";
+import { WFIcon } from "./WFIcon";
 
 interface HowItWorksProps {
   onStart: () => void;
@@ -29,7 +30,19 @@ export function HowItWorks({ onStart }: HowItWorksProps) {
             </div>
           ))}
         </div>
-        <div style={{ marginTop: 40 }}>
+        <div style={{
+          marginTop: 44, padding: "20px 24px", borderRadius: "var(--wf-radius-md)",
+          background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.14)",
+          display: "flex", gap: 14, alignItems: "flex-start", maxWidth: 760,
+        }}>
+          <span style={{ flexShrink: 0, marginTop: 1 }}>
+            <WFIcon name="chat" size={22} stroke="var(--wf-hero-green-50)" />
+          </span>
+          <p style={{ margin: 0, fontFamily: "var(--wf-font-sans)", fontSize: 15.5, lineHeight: 1.55, color: "rgba(255,255,255,0.82)" }}>
+            Whatever model the tool suggests is just an initial idea to get the conversation started. Every real partnership is co-created. Our team works closely with you to shape a solution tailored to your goals, your budget, and the difference you want to make.
+          </p>
+        </div>
+        <div style={{ marginTop: 32 }}>
           <PillButton icon="arrow" onClick={onStart}>Start now</PillButton>
         </div>
       </div>
