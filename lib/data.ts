@@ -10,14 +10,14 @@ export interface Programme {
   name: string;
   region: string;
   color: string;
+  img?: string;
 }
 
 export interface RecommendResult {
   companyName: string;
   industry: string;
   modelKey: "climate" | "branding" | "employee";
-  modelTitle: string;
-  tagline: string;
+  campaignName: string;
   whyItFits: string;
   programme: string;
   programmeReason: string;
@@ -42,8 +42,8 @@ export const WF_MODELS: Record<string, string> = {
 export const WF_PROGRAMMES: Programme[] = [
   { id: "great-green-wall", name: "The Great Green Wall", region: "West Africa", color: "var(--wf-leaf)" },
   { id: "blue-carbon", name: "Blue Carbon", region: "West Africa — coastal mangroves", color: "var(--wf-teal)" },
-  { id: "miombo", name: "Miombo Belt Regeneration", region: "Southern Africa", color: "var(--wf-clay)" },
-  { id: "eastern-afromontane", name: "Eastern Afromontane Biodiversity Hotspot", region: "East Africa", color: "var(--wf-program-eastern-afromontane)" },
+  { id: "miombo", name: "Miombo Belt Regeneration", region: "Southern Africa", color: "var(--wf-clay)", img: "/assets/img-miombo.jpg" },
+  { id: "eastern-afromontane", name: "Eastern Afromontane Biodiversity Hotspot", region: "East Africa", color: "var(--wf-program-eastern-afromontane)", img: "/assets/img-eastern-afromontane.jpg" },
   { id: "wildlife-corridors", name: "Wildlife Corridors", region: "South America", color: "var(--wf-pollen)" },
 ];
 
@@ -79,13 +79,12 @@ export function fallbackResult(url: string, objective: Objective): RecommendResu
   const key = (map[objective.id] || "branding") as "climate" | "branding" | "employee";
   const domain = prettyDomain(url);
   const name = domain.split(".")[0].replace(/^\w/, (c) => c.toUpperCase());
-  const progByKey: Record<string, string> = { branding: "Wildlife Corridors", employee: "Miombo Belt Regeneration", climate: "The Great Green Wall" };
+  const progByKey: Record<string, string> = { branding: "Eastern Afromontane Biodiversity Hotspot", employee: "Miombo Belt Regeneration", climate: "Miombo Belt Regeneration" };
   return {
     companyName: name,
     industry: "",
     modelKey: key,
-    modelTitle: WF_MODELS[key],
-    tagline: "Real impact your stakeholders can see.",
+    campaignName: "Grow Forward, Together",
     whyItFits: `Your goal to ${objective.label.toLowerCase()} maps naturally onto a WeForest partnership. We help you turn a nature commitment into verified, on-the-ground restoration — with stories and data you can share with the people who matter most to you.`,
     programme: progByKey[key],
     programmeReason: "A flagship WeForest programme with strong community impact and a compelling story to tell.",
@@ -95,4 +94,28 @@ export function fallbackResult(url: string, objective: Objective): RecommendResu
       "Bring your team in with an engagement moment around the project.",
     ],
   };
+}
+
+export function buildShareLink(result: RecommendResult, submission: { url: string; objective: Objective }): string {
+  try {
+    const payload = { r: result, u: submission.url, o: submission.objective.id };
+    const json = JSON.stringify(payload);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return window.location.origin + window.location.pathname + "#p=" + b64;
+  } catch {
+    return window.location.href;
+  }
+}
+
+export function decodeShareState(hash: string): { result: RecommendResult; submission: { url: string; objective: Objective } } | null {
+  try {
+    const m = hash.match(/[#&]p=([^&]+)/);
+    if (!m) return null;
+    const json = decodeURIComponent(escape(atob(m[1])));
+    const payload = JSON.parse(json);
+    const objective = WF_OBJECTIVES.find((o) => o.id === payload.o) || WF_OBJECTIVES[0];
+    return { result: payload.r, submission: { url: payload.u, objective } };
+  } catch {
+    return null;
+  }
 }

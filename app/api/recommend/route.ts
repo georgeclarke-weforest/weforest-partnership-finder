@@ -31,7 +31,6 @@ async function fetchWebsiteText(url: string): Promise<string> {
   const $ = cheerio.load(html);
   $("script, style, nav, footer, header, [aria-hidden='true']").remove();
   const text = $("body").text().replace(/\s+/g, " ").trim();
-  // Truncate to ~3000 chars (~750 tokens)
   return text.slice(0, 3000);
 }
 
@@ -50,24 +49,20 @@ WeForest offers three business partnership models:
 2. "Nature-Positive Branding & Campaigns" (key: branding) — co-branding, product-linked campaigns, high-visibility storytelling and content for long-term customer engagement.
 3. "Employee Engagement" (key: employee) — wellness challenges linked to restoration, expert-led learning on nature and climate, and talent attraction and retention.
 
-WeForest restoration programmes to match against:
-- "The Great Green Wall" (West Africa)
-- "Blue Carbon" (West Africa, coastal mangroves)
-- "Miombo Belt Regeneration" (Southern Africa)
-- "Eastern Afromontane Biodiversity Hotspot" (East Africa)
-- "Wildlife Corridors" (South America)
+WeForest restoration programmes to match against (choose ONLY ONE of these two):
+- "Miombo Belt Regeneration" (Southern Africa) — dry tropical woodland regeneration with strong community livelihoods.
+- "Eastern Afromontane Biodiversity Hotspot" (East Africa) — montane forest restoration in one of the world's richest biodiversity hotspots.
 
-Infer the company's likely name, industry and brand from the domain and anything you know about it. Then choose the single best-fitting model and one programme for their objective.
+Infer the company's likely name, industry and brand from the domain and anything you know about it. Then choose the single best-fitting model, invent a tailored partnership campaign name, and choose whichever of the two programmes above fits their objective best.
 
 Respond with ONLY a raw JSON object (no markdown, no backticks) with exactly this shape:
 {
  "companyName": "best guess at the company name from the domain",
  "industry": "short industry descriptor, e.g. 'outdoor apparel retailer'",
  "modelKey": "climate | branding | employee",
- "modelTitle": "the matching model name, optionally lightly tailored to them",
- "tagline": "a 4-8 word rallying line for this partnership",
+ "campaignName": "a distinctive, tailored 2-5 word campaign name for this partnership, e.g. 'Move Nature Forward, Together' — Title Case, no quotes",
  "whyItFits": "2 to 3 sentences in second person (you/your), specific to this company and objective, hopeful and scientifically credible, no exclamation marks",
- "programme": "exact name of ONE programme from the list",
+ "programme": "either 'Miombo Belt Regeneration' or 'Eastern Afromontane Biodiversity Hotspot'",
  "programmeReason": "one sentence on why this programme suits them",
  "activations": ["three concrete, specific activation ideas tailored to them"]
 }
@@ -95,7 +90,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "objective is required" }, { status: 400 });
   }
 
-  // Fetch website text server-side for more accurate results
   let websiteText: string | null = null;
   try {
     websiteText = await fetchWebsiteText(url);
@@ -132,7 +126,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "AI returned invalid JSON" }, { status: 502 });
   }
 
-  // Validate shape
   const r = result as Record<string, unknown>;
   if (
     typeof r.companyName !== "string" ||

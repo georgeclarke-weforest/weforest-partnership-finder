@@ -1,0 +1,94 @@
+<html>
+  <body style="margin:0; padding:0; background-color:#f6f8ee; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; color:#374f59;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f8ee;">
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:600px; background-color:#ffffff; border-radius:16px; overflow:hidden; border:1px solid #dde0e3;">
+
+            <!-- Header -->
+            <tr>
+              <td style="background-color:#132736; padding:28px 36px;">
+                {{#if logoUrl}}
+                  <img src="{{logoUrl}}" alt="WeForest" height="34" style="height:34px; display:block; border:0;" />
+                {{else}}
+                  <span style="color:#ffffff; font-size:22px; font-weight:bold; letter-spacing:-0.01em;">WeForest</span>
+                {{/if}}
+              </td>
+            </tr>
+
+            <!-- Banner -->
+            <tr>
+              <td style="background-color:#132736; padding:0 36px 36px;">
+                <p style="margin:0 0 10px; color:#a4b65a; font-size:12px; font-weight:bold; letter-spacing:0.18em; text-transform:uppercase;">Your tailored partnership</p>
+                <h1 style="margin:0; color:#ffffff; font-size:30px; line-height:1.15; font-weight:bold;">{{campaignName}}</h1>
+                {{#if modelName}}
+                  <p style="margin:14px 0 0; color:rgba(255,255,255,0.78); font-size:14px;">Based on {{modelName}}</p>
+                {{/if}}
+              </td>
+            </tr>
+
+            <!-- Body -->
+            <tr>
+              <td style="padding:36px;">
+                <p style="margin:0 0 18px; font-size:16px; line-height:1.6; color:#374f59;">Hi {{firstName}},</p>
+                <p style="margin:0 0 18px; font-size:16px; line-height:1.6; color:#374f59;">
+                  Thank you for exploring how forest and landscape restoration could help {{company}} reach its goals.
+                  Here is the partnership idea our finder put together for you.
+                </p>
+
+                {{#if whyItFits}}
+                  <p style="margin:0 0 18px; font-size:15px; line-height:1.6; color:#374f59;">{{whyItFits}}</p>
+                {{/if}}
+
+                {{#if programmeName}}
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:8px 0 28px; background-color:#f6f8ee; border-radius:12px;">
+                    <tr>
+                      <td style="padding:18px 20px;">
+                        <p style="margin:0 0 6px; color:#788b2b; font-size:11px; font-weight:bold; letter-spacing:0.18em; text-transform:uppercase;">Programme match</p>
+                        <p style="margin:0; color:#132736; font-size:17px; font-weight:bold;">{{programmeName}}</p>
+                        {{#if programmeRegion}}
+                          <p style="margin:4px 0 0; color:#6b7a82; font-size:13px;">{{programmeRegion}}</p>
+                        {{/if}}
+                      </td>
+                    </tr>
+                  </table>
+                {{/if}}
+
+                <!-- CTA button -->
+                <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+                  <tr>
+                    <td style="border-radius:9999px; background-color:#788b2b;">
+                      <a href="{{partnershipUrl}}" style="display:inline-block; padding:15px 32px; font-size:15px; font-weight:bold; color:#ffffff; text-decoration:none; border-radius:9999px;">View your partnership</a>
+                    </td>
+                  </tr>
+                </table>
+
+                <p style="margin:0 0 18px; font-size:14px; line-height:1.6; color:#6b7a82;">
+                  This is an initial idea to spark the conversation, not a fixed package. Every WeForest partnership is
+                  co-created, so our team would work closely with you to shape a solution tailored to your goals,
+                  your budget, and the impact you want to have.
+                </p>
+                <p style="margin:0; font-size:15px; line-height:1.6; color:#374f59;">
+                  Warm regards,<br />
+                  The WeForest Partnerships team
+                </p>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="background-color:#f6f8ee; padding:22px 36px; border-top:1px solid #dde0e3;">
+                <p style="margin:0; font-size:12px; line-height:1.5; color:#6b7a82;">
+                  WeForest &mdash; restoring forests for People, Nature and Climate.<br />
+                  If the button does not work, copy and paste this link into your browser:<br />
+                  <a href="{{partnershipUrl}}" style="color:#788b2b; word-break:break-all;">{{partnershipUrl}}</a>
+                </p>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

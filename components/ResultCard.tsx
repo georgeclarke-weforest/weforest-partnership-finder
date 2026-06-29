@@ -9,12 +9,13 @@ interface ResultCardProps {
   domain: string;
   objective: Objective;
   onContact: () => void;
+  onEmail: () => void;
   onRestart: () => void;
 }
 
-export function ResultCard({ data, domain, objective: _objective, onContact, onRestart }: ResultCardProps) {
+export function ResultCard({ data, domain, objective: _objective, onContact, onEmail, onRestart }: ResultCardProps) {
   const prog = programmeMeta(data.programme);
-  const modelLabel = WF_MODELS[data.modelKey] || data.modelTitle || WF_MODELS.branding;
+  const modelLabel = WF_MODELS[data.modelKey] || WF_MODELS.branding;
 
   return (
     <section style={{ background: "var(--wf-white)", padding: "72px clamp(20px,4vw,56px) 24px" }}>
@@ -31,15 +32,9 @@ export function ResultCard({ data, domain, objective: _objective, onContact, onR
           <div style={{ background: "var(--wf-midnight)", color: "#fff", padding: "clamp(28px,4vw,40px)", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", right: -40, top: -40, width: 220, height: 220, borderRadius: "50%", background: "rgba(120,139,43,0.22)" }} />
             <div style={{ position: "relative" }}>
-              <Eyebrow color="var(--wf-hero-green-60)">Recommended model</Eyebrow>
-              <h2 style={{ color: "#fff", fontSize: "clamp(26px,3vw,40px)", margin: "10px 0 0", lineHeight: 1.1 }}>
-                {data.modelTitle || modelLabel}
+              <h2 style={{ color: "#fff", fontSize: "clamp(26px,3vw,40px)", margin: "0", lineHeight: 1.1 }}>
+                {data.campaignName || modelLabel}
               </h2>
-              {data.tagline && (
-                <p style={{ color: "var(--wf-hero-green-50)", fontSize: 17, fontWeight: 500, margin: "12px 0 0", fontStyle: "italic", marginBottom: 0 }}>
-                  {data.tagline}
-                </p>
-              )}
               <div style={{ marginTop: 16, display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.1)", borderRadius: 9999, padding: "6px 14px" }}>
                 <WFIcon name="check" size={16} stroke="var(--wf-hero-green-50)" sw={2.4} />
                 <span style={{ fontFamily: "var(--wf-font-sans)", fontSize: 13, color: "rgba(255,255,255,0.88)" }}>
@@ -52,6 +47,7 @@ export function ResultCard({ data, domain, objective: _objective, onContact, onR
           {/* Body */}
           <div style={{ padding: "clamp(28px,4vw,40px)" }}>
             <div style={{ display: "grid", gap: 36, gridTemplateColumns: "1.5fr 1fr", alignItems: "start" }} className="wf-result-grid">
+              {/* Why it fits */}
               <div>
                 <h3 style={{ fontSize: 18 }}>Why this fits {data.companyName || "you"}</h3>
                 <p style={{ marginBottom: 0 }}>{data.whyItFits}</p>
@@ -69,14 +65,22 @@ export function ResultCard({ data, domain, objective: _objective, onContact, onR
                 </ul>
               </div>
 
-              <div style={{ background: "var(--wf-bg-2)", borderRadius: "var(--wf-radius-md)", padding: "24px 22px" }}>
-                <Eyebrow style={{ fontSize: 12 }}>Programme match</Eyebrow>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12 }}>
-                  <span style={{ width: 14, height: 14, borderRadius: 4, background: prog.color, flexShrink: 0 }} />
-                  <span style={{ fontFamily: "var(--wf-font-sans)", fontWeight: 700, fontSize: 17, color: "var(--wf-midnight)", lineHeight: 1.2 }}>{prog.name}</span>
+              {/* Programme match */}
+              <div style={{ background: "var(--wf-bg-2)", borderRadius: "var(--wf-radius-md)", overflow: "hidden" }}>
+                {prog.img && (
+                  <div style={{ height: 150, background: `url('${prog.img}') center/cover`, position: "relative" }}>
+                    <div style={{ position: "absolute", inset: 0, background: "var(--wf-overlay-gradient)" }} />
+                  </div>
+                )}
+                <div style={{ padding: "22px 22px 24px" }}>
+                  <Eyebrow style={{ fontSize: 12 }}>Programme match</Eyebrow>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12 }}>
+                    <span style={{ width: 14, height: 14, borderRadius: 4, background: prog.color, flexShrink: 0 }} />
+                    <span style={{ fontFamily: "var(--wf-font-sans)", fontWeight: 700, fontSize: 17, color: "var(--wf-midnight)", lineHeight: 1.2 }}>{prog.name}</span>
+                  </div>
+                  <div style={{ fontFamily: "var(--wf-font-sans)", fontSize: 13, color: "var(--wf-fg-3)", marginTop: 6 }}>{prog.region}</div>
+                  <p style={{ fontSize: 14.5, marginTop: 12, marginBottom: 0 }}>{data.programmeReason}</p>
                 </div>
-                <div style={{ fontFamily: "var(--wf-font-sans)", fontSize: 13, color: "var(--wf-fg-3)", marginTop: 6 }}>{prog.region}</div>
-                <p style={{ fontSize: 14.5, marginTop: 12, marginBottom: 0 }}>{data.programmeReason}</p>
               </div>
             </div>
 
@@ -96,11 +100,21 @@ export function ResultCard({ data, domain, objective: _objective, onContact, onR
             {/* CTAs */}
             <div style={{ marginTop: 32, display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
               <PillButton icon="arrow" onClick={onContact}>Contact the Partnerships team</PillButton>
+              <PillButton variant="outline" onClick={onEmail}>Email me this partnership</PillButton>
               <PillButton variant="outline" onClick={onRestart}>Try another objective</PillButton>
             </div>
-            <p style={{ fontSize: 13, color: "var(--wf-fg-3)", marginTop: 16, marginBottom: 0 }}>
-              This recommendation is an AI-generated starting point. Your partnership is shaped together with our team.
-            </p>
+
+            {/* Co-creation note */}
+            <div style={{ marginTop: 24, padding: "18px 20px", borderRadius: "var(--wf-radius-md)", background: "var(--wf-hero-green-10)", display: "flex", gap: 13, alignItems: "flex-start" }}>
+              <span style={{ flexShrink: 0, marginTop: 1, color: "var(--wf-hero-green)" }}>
+                <WFIcon name="chat" size={20} stroke="var(--wf-hero-green)" />
+              </span>
+              <p style={{ margin: 0, fontFamily: "var(--wf-font-sans)", fontSize: 14.5, lineHeight: 1.55, color: "var(--wf-slate)" }}>
+                This is an initial idea to spark the conversation — not a fixed package. Every WeForest
+                partnership is co-created, so our team will work closely with you to build a solution
+                tailored to your goals, your budget, and the impact you want to have.
+              </p>
+            </div>
           </div>
         </div>
       </div>
