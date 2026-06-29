@@ -18,7 +18,7 @@ export function Hero({ onStart }: HeroProps) {
       position: "relative",
       minHeight: 620,
       overflow: "hidden",
-      background: `url('/assets/img-great-green-wall.jpg') center/cover`,
+      background: `url('/assets/img-mangrove-restoration.jpg') center/cover`,
     }}>
       <div style={{ position: "absolute", inset: 0, background: "var(--wf-overlay-gradient)" }} />
       <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.28)" }} />
