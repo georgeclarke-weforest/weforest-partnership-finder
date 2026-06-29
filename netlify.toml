@@ -3,13 +3,12 @@
   publish = ".next"
   functions = "netlify/functions"
 
+[build.environment]
+  NODE_VERSION = "22"
+  NETLIFY_EMAILS_DIRECTORY = "emails"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 [[plugins]]
   package = "@netlify/plugin-emails"
-  [plugins.inputs]
-    directory = "emails"
-
-[build.environment]
-  NODE_VERSION = "20"
